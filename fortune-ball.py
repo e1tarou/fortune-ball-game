@@ -1,35 +1,5 @@
-pip import pyxel
+import pyxel
 import random
-
-class FortuneBallCatchGame:
-    def __init__(self):
-        # 占いゲームの初期化
-        self.fortune_game = FortuneGame()
-
-        # ボールキャッチゲームの初期化
-        self.ball_catch_game = BallCatchGame()
-
-        # ゲームの状態
-        self.current_game = self.fortune_game
-
-        # イベント登録
-        pyxel.init(160, 120, caption="Fortune Ball Catch Game")
-        pyxel.mouse(True)
-        pyxel.run(self.update, self.draw)
-
-    def update(self):
-        self.current_game.update()
-
-        # 占いゲームが終了したらボールキャッチゲームに切り替える
-        if self.current_game.game_over and isinstance(self.current_game, FortuneGame):
-            self.current_game = self.ball_catch_game
-
-        # ボールキャッチゲームが終了したら再び占いゲームに切り替える
-        elif self.current_game.game_over and isinstance(self.current_game, BallCatchGame):
-            self.current_game = self.fortune_game
-
-    def draw(self):
-        self.current_game.draw()
 
 class FortuneGame:
     def __init__(self):
@@ -120,9 +90,6 @@ class BallCatchGame:
                 self.game_over = True
 
     def draw(self):
-        # 画面クリア
-        pyxel.cls(0)
-
         # プレイヤーの描画
         pyxel.rect(self.player_x, 110, 20, 10, pyxel.COLOR_WHITE)
 
@@ -145,6 +112,36 @@ class BallCatchGame:
         # ゲームオーバー時に'R'キーで再起動
         if pyxel.btnp(pyxel.KEY_R) and self.game_over:
             self.__init__()
+
+class FortuneBallCatchGame:
+    def __init__(self):
+        # 占いゲームの初期化
+        self.fortune_game = FortuneGame()
+
+        # ボールキャッチゲームの初期化
+        self.ball_catch_game = BallCatchGame()
+
+        # ゲームの状態
+        self.current_game = self.fortune_game
+
+        # イベント登録
+        pyxel.init(160, 120, "Fortune Ball Catch Game")
+        pyxel.mouse(True)
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+        self.current_game.update()
+
+        # 占いゲームが終了したらボールキャッチゲームに切り替える
+        if self.current_game.game_over and isinstance(self.current_game, FortuneGame):
+            self.current_game = self.ball_catch_game
+
+        # ボールキャッチゲームが終了したら再び占いゲームに切り替える
+        elif self.current_game.game_over and isinstance(self.current_game, BallCatchGame):
+            self.current_game = self.fortune_game
+
+    def draw(self):
+        self.current_game.draw()
 
 if __name__ == "__main__":
     FortuneBallCatchGame()

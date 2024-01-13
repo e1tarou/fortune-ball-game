@@ -13,6 +13,8 @@ class FortuneBallCatchGame:
         self.current_game = self.fortune_game
 
         # イベント登録
+        pyxel.init(160, 120, caption="Fortune Ball Catch Game")
+        pyxel.mouse(True)
         pyxel.run(self.update, self.draw)
 
     def update(self):
@@ -31,18 +33,11 @@ class FortuneBallCatchGame:
 
 class FortuneGame:
     def __init__(self):
-        # 初期化
-        pyxel.init(160, 120, caption="Fortune Ball Catch Game")
-        pyxel.mouse(True)
-
         # ゲームの状態
         self.question = "Is today your lucky day? Yes or No"
         self.yes_count = 0
         self.no_count = 0
         self.fortune = ""
-
-        # イベント登録
-        pyxel.run(self.update, self.draw)
 
     def update(self):
         if not self.fortune:
@@ -86,10 +81,6 @@ class FortuneGame:
 
 class BallCatchGame:
     def __init__(self):
-        # 初期化
-        pyxel.init(160, 120, caption="Fortune Ball Catch Game")
-        pyxel.mouse(True)
-
         # ゲームの状態
         self.player_x = 75
         self.ball_x = random.randint(0, 160)
@@ -99,9 +90,6 @@ class BallCatchGame:
         self.super_luck = False
         self.end_message = ""
         self.timer = 600  # 10秒
-
-        # イベント登録
-        pyxel.run(self.update, self.draw)
 
     def update(self):
         if not self.game_over:
@@ -158,6 +146,6 @@ class BallCatchGame:
         if pyxel.btnp(pyxel.KEY_R) and self.game_over:
             self.__init__()
 
+if __name__ == "__main__":
+    FortuneBallCatchGame()
 
-
-pyxel.run(update, draw)

@@ -158,8 +158,6 @@ class BallCatchGame:
         if pyxel.btnp(pyxel.KEY_R) and self.game_over:
             self.__init__()
 
-if __name__ == "__main__":
-    FortuneBallCatch
 
 
 pyxel.run(update, draw)

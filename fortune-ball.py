@@ -1,4 +1,4 @@
-import pyxel
+pip import pyxel
 import random
 
 class FortuneBallCatchGame:

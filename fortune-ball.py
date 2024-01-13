@@ -160,3 +160,6 @@ class BallCatchGame:
 
 if __name__ == "__main__":
     FortuneBallCatch
+
+
+pyxel.run(update, draw)

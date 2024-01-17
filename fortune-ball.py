@@ -91,7 +91,6 @@ class BallCatchGame:
             # タイマーの更新
             self.timer -= 1
             if self.timer <= 0:
-                self.end_message = "The End"
                 self.game_over = True
 
     def draw(self):
@@ -109,9 +108,7 @@ class BallCatchGame:
             if self.super_luck:
                 pyxel.text(45, 50, "Super Luck!", pyxel.COLOR_WHITE)
             else:
-                pyxel.text(55, 50, self.end_message, pyxel.COLOR_WHITE)
-                if not self.super_luck:
-                    pyxel.text(45, 60, "Press 'R' to retry", pyxel.COLOR_WHITE)
+                    pyxel.text(45, 60, "Good Luck", pyxel.COLOR_WHITE)
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass
@@ -145,7 +142,4 @@ class FortuneBallCatchGame:
 if __name__ == "__main__":
     FortuneBallCatchGame()
 
-
-if __name__ == "__main__":
-    FortuneBallCatchGame()
 

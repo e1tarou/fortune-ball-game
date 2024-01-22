@@ -1,35 +1,55 @@
 import pyxel
 import random
+import math
 
 class FortuneGame:
     def __init__(self):
         # ゲームの状態
-        self.question = "Is today your lucky day? Yes or No"
+        self.questions = [
+            "Is today your lucky day? Yes or No",
+            "Did you have your meal? Yes or No",
+            "Have you finished your homework? Yes or No",
+            "Are you feeling well? Yes or No",
+            "Did you smile today? Yes or No"
+        ]
+        self.current_question_index = 0
         self.yes_count = 0
         self.no_count = 0
         self.fortune = ""
         self.game_over = False
+        self.answered = False
 
     def update(self):
-        if not self.fortune:
+        if not self.game_over and not self.answered:
+            current_question = self.questions[self.current_question_index]
+
             if pyxel.btnp(pyxel.KEY_Y):
                 self.yes_count += 1
+                self.answered = True
             elif pyxel.btnp(pyxel.KEY_N):
                 self.no_count += 1
+                self.answered = True
 
-            if self.yes_count + self.no_count >= 5:
-                self.calculate_fortune()
+            if self.answered:
+                self.current_question_index += 1
+                self.answered = False
+
+                # Check if all questions have been asked
+                if self.current_question_index >= len(self.questions):
+                    self.calculate_fortune()
+                    self.game_over = True
 
     def draw(self):
         # 画面クリア
         pyxel.cls(0)
 
         # 質問の表示
-        pyxel.text(10, 50, self.question, pyxel.COLOR_WHITE)
+        current_question = self.questions[self.current_question_index]
+        pyxel.text(10, 50, current_question, pyxel.COLOR_WHITE)
 
         # YesとNoの回数の表示
-        pyxel.text(10, 60, "Yes: {}".format(self.yes_count), pyxel.COLOR_GREEN)
-        pyxel.text(10, 70, "No: {}".format(self.no_count), pyxel.COLOR_RED)
+        pyxel.text(10, 60, "Yes (Y Key): {}".format(self.yes_count), pyxel.COLOR_GREEN)
+        pyxel.text(10, 70, "No (N Key): {}".format(self.no_count), pyxel.COLOR_RED)
 
         # 運勢の表示
         if self.fortune:
@@ -50,15 +70,14 @@ class FortuneGame:
         else:
             self.fortune = "Minor Luck"
 
-        self.game_over = True
-
 class BallCatchGame:
     def __init__(self):
         # ゲームの状態
         self.player_x = 75
         self.ball_x = random.randint(0, 160)
         self.ball_y = 0
-        self.ball_speed = 2
+        self.ball_speed = 4
+        self.ball_angle = random.uniform(math.pi / 4, math.pi / 2)  # Random angle between pi/4 and pi/2
         self.game_over = False
         self.super_luck = False
         self.end_message = ""
@@ -67,12 +86,14 @@ class BallCatchGame:
     def update(self):
         if not self.game_over:
             # ボールの移動
-            self.ball_y += self.ball_speed
+            self.ball_x += self.ball_speed * math.cos(self.ball_angle)
+            self.ball_y += self.ball_speed * math.sin(self.ball_angle)
 
             # ボールが画面外に出たら新しいボールを生成
             if self.ball_y > 120:
                 self.ball_x = random.randint(0, 160)
                 self.ball_y = 0
+                self.ball_angle = random.uniform(math.pi / 4, math.pi / 2)
 
             # ボールがプレイヤーにキャッチされたか判定
             if (
@@ -108,7 +129,7 @@ class BallCatchGame:
             if self.super_luck:
                 pyxel.text(45, 50, "Super Luck!", pyxel.COLOR_WHITE)
             else:
-                    pyxel.text(45, 60, "Good Luck", pyxel.COLOR_WHITE)
+                pyxel.text(45, 60, "Good Luck", pyxel.COLOR_WHITE)
 
     def on_mouse_motion(self, x, y, dx, dy):
         pass
